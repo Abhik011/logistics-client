@@ -27,7 +27,7 @@ function TripDrawer({ trip, onClose }: any) {
       }
     });
 
-    return () => socketRef.current?.disconnect();
+    return () => {socketRef.current?.disconnect();}
   }, [trip.id]);
 
   const fetchLocation = async () => {

@@ -41,7 +41,7 @@ export default function InvoicesPage() {
       );
     });
 
-    return () => socket.disconnect();
+    return () => {socket.disconnect();}
   }, []);
 
   return (

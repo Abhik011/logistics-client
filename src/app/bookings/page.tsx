@@ -36,22 +36,24 @@ export default function BookingsPage() {
   /* ================= SOCKET ================= */
 
   useEffect(() => {
-    const socket = io("http://localhost:5500");
+  const socket = io("http://localhost:5500");
 
-    socket.on("booking-created", (newBooking) => {
-      setBookings((prev) => [newBooking, ...prev]);
-    });
+  socket.on("booking-created", (newBooking) => {
+    setBookings((prev) => [newBooking, ...prev]);
+  });
 
-    socket.on("booking-updated", (updatedBooking) => {
-      setBookings((prev) =>
-        prev.map((b) =>
-          b.id === updatedBooking.id ? updatedBooking : b
-        )
-      );
-    });
+  socket.on("booking-updated", (updatedBooking) => {
+    setBookings((prev) =>
+      prev.map((b) =>
+        b.id === updatedBooking.id ? updatedBooking : b
+      )
+    );
+  });
 
-    return () => socket.disconnect();
-  }, []);
+  return () => {
+    socket.disconnect();   // ✅ now returns void
+  };
+}, []);
 
   /* ================= KPI ================= */
 
@@ -217,7 +219,7 @@ export default function BookingsPage() {
         <BookingDrawer
           booking={selected}
           onClose={() => setSelected(null)}
-          onLocalUpdate={(updated) =>
+          onLocalUpdate={(updated: any) =>
             setBookings((prev) =>
               prev.map((b) =>
                 b.id === updated.id ? updated : b
