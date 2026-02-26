@@ -36,7 +36,7 @@ export default function BookingsPage() {
   /* ================= SOCKET ================= */
 
   useEffect(() => {
-  const socket = io("http://18.212.231.128:3000");
+  const socket = io(window.location.origin);
 
   socket.on("booking-created", (newBooking) => {
     setBookings((prev) => [newBooking, ...prev]);
