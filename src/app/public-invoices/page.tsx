@@ -27,7 +27,9 @@ export default function InvoicesPage() {
   useEffect(() => {
     fetchInvoices();
 
-    const socket = io(window.location.origin);
+   const socket = io({
+  transports: ["websocket"],   // 🔥 force websocket only
+});
 
     socket.on("invoice-created", (newInvoice) => {
       setInvoices((prev) => [newInvoice, ...prev]);

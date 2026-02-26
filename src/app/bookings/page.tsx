@@ -36,7 +36,9 @@ export default function BookingsPage() {
   /* ================= SOCKET ================= */
 
   useEffect(() => {
-  const socket = io(window.location.origin);
+  const socket = io({
+  transports: ["websocket"],   // 🔥 force websocket only
+});
 
   socket.on("booking-created", (newBooking) => {
     setBookings((prev) => [newBooking, ...prev]);
