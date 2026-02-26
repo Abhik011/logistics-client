@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { StatCard } from "@/components/StatCard";
-import RevenueChart from "@/components/charts/RevenueChart";
+import RevenueChart from "@/components/Charts/RevenueChart";
 import { KpiCard } from "@/components/KpiCard";
 import { Loader2 } from "lucide-react";
 
