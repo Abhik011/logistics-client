@@ -62,7 +62,7 @@ export default function TripPage() {
         const fetchTrip = async () => {
             try {
                 const res = await axios.get(
-                    `http://localhost:5500/trips/${tripId}`,
+                    `/api/trips/${tripId}`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
 
@@ -117,7 +117,7 @@ export default function TripPage() {
 
                 if (distance > 10) {
                     await axios.patch(
-                        `http://localhost:5500/trips/${tripId}/location`,
+                        `/api/trips/${tripId}/location`,
                         {
                             latitude,
                             longitude,
@@ -152,7 +152,7 @@ export default function TripPage() {
 
         try {
             await axios.post(
-                `http://localhost:5500/trips/${tripId}/fuel`,
+                `/api/trips/${tripId}/fuel`,
                 {
                     litres: Number(fuellitres),
                     amount: Number(fuelCost),   // ✅ correct field
@@ -189,7 +189,7 @@ export default function TripPage() {
         formData.append("file", file);
 
         await axios.post(
-            `http://localhost:5500/driver/trip/${tripId}/pod`,
+            `/api/driver/trip/${tripId}/pod`,
             formData,
             {
                 headers: { Authorization: `Bearer ${token}` },

@@ -16,7 +16,7 @@ export default function VehiclesPage() {
   });
 
   const fetchVehicles = async () => {
-    const res = await axios.get("http://localhost:5500/vehicles");
+    const res = await axios.get("/api/vehicles");
     setVehicles(res.data);
   };
 
@@ -27,7 +27,7 @@ export default function VehiclesPage() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    await axios.post("http://localhost:5500/vehicles", {
+    await axios.post("/api/vehicles", {
       ...form,
       capacityTons: Number(form.capacityTons),
       costPerKm: Number(form.costPerKm),

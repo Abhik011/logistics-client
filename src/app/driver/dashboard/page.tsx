@@ -14,7 +14,7 @@ export default function Dashboard() {
     const token = localStorage.getItem("driver_token");
 
     const res = await axios.get(
-      "http://localhost:5500/driver/my-trips",
+      "/api/driver/my-trips",
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -37,7 +37,7 @@ export default function Dashboard() {
     const token = localStorage.getItem("driver_token");
 
     await axios.patch(
-      `http://localhost:5500/driver/trip/${tripId}/status`,
+      `/api/driver/trip/${tripId}/status`,
       { status },
       { headers: { Authorization: `Bearer ${token}` } }
     );

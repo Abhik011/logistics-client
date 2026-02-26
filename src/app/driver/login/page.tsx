@@ -32,7 +32,7 @@ export default function DriverLogin() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5500/driver-auth/login",
+        "/api/driver-auth/login",
         { phone, password }
       );
 

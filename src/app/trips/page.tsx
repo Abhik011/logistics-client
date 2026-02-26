@@ -19,7 +19,7 @@ function TripDrawer({ trip, onClose }: any) {
     fetchLocation();
     fetchVehicles();
 
-    socketRef.current = io("http://localhost:5500");
+    socketRef.current = io("/api");
 
     socketRef.current.on("trip-location-updated", (data: any) => {
       if (data.tripId === trip.id) {
@@ -132,7 +132,7 @@ export default function TripsPage() {
   useEffect(() => {
     fetchTrips();
 
-    socketRef.current = io("http://localhost:5500");
+    socketRef.current = io("/api");
 
     socketRef.current.on("trip-created", (newTrip) => {
       setTrips((prev) => [newTrip, ...prev]);

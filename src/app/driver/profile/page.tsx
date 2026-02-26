@@ -28,7 +28,7 @@ export default function DriverProfile() {
     const fetchProfile = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5500/driver-auth/profile",
+          "/api/driver-auth/profile",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -67,7 +67,7 @@ export default function DriverProfile() {
 
     try {
       await axios.put(
-        "http://localhost:5500/driver-auth/profile",
+        "/api/driver-auth/profile",
         form,
         {
           headers: {

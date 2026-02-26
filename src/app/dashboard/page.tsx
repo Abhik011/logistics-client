@@ -14,7 +14,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5500/dashboard", {
+      .get("/api/dashboard", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

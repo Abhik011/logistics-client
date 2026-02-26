@@ -27,7 +27,7 @@ export default function InvoicesPage() {
   useEffect(() => {
     fetchInvoices();
 
-    const socket = io("http://localhost:5500");
+    const socket = io("/api");
 
     socket.on("invoice-created", (newInvoice) => {
       setInvoices((prev) => [newInvoice, ...prev]);
@@ -41,7 +41,7 @@ export default function InvoicesPage() {
       );
     });
 
-    return () => {socket.disconnect();}
+    return () => { socket.disconnect(); }
   }, []);
 
   return (
