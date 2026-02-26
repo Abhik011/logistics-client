@@ -27,7 +27,7 @@ export default function InvoicesPage() {
   useEffect(() => {
     fetchInvoices();
 
-    const socket = io("/api");
+    const socket = io("http://18.212.231.128");
 
     socket.on("invoice-created", (newInvoice) => {
       setInvoices((prev) => [newInvoice, ...prev]);
