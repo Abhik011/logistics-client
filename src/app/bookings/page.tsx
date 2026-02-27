@@ -265,7 +265,7 @@ function BookingDrawer({ booking, onClose, onLocalUpdate }: any) {
     "PLANNED",
     "DISPATCHED",
     "IN_TRANSIT",
-    "DELIVERED",
+    "COMPLETED",
     "COMPLETED",
   ];
 

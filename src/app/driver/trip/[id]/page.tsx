@@ -39,7 +39,7 @@ export default function TripPage() {
   useEffect(() => {
     if (!tripId) return;
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("driver_token");
 
     const fetchTrip = async () => {
       try {
@@ -141,7 +141,7 @@ export default function TripPage() {
 
     await axios.patch(
       `/api/driver/trip/${tripId}/status`,
-      { status: "DELIVERED" },
+      { status: "COMPLETED" },
       { headers: { Authorization: `Bearer ${token}` } }
     );
 
@@ -233,7 +233,7 @@ export default function TripPage() {
       )}
 
       {/* SLIDE TO COMPLETE */}
-      {!completed && tripStatus !== "DELIVERED" && (
+      {!completed && tripStatus !== "COMPLETED" && (
         <div
           ref={containerRef}
           className="relative h-14 bg-gray-200 rounded-full overflow-hidden"
@@ -301,7 +301,7 @@ export default function TripPage() {
       </div>
 
       {/* POD */}
-      {tripStatus === "DELIVERED" && (
+      {tripStatus === "COMPLETED" && (
         <div className="bg-white p-6 rounded-2xl shadow border space-y-4">
           <h2 className="font-semibold text-lg">
             Upload POD

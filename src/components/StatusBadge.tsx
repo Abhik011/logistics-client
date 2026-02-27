@@ -4,8 +4,8 @@ export default function StatusBadge({ status }: any) {
     PLANNED: "bg-indigo-100 text-indigo-700",
     DISPATCHED: "bg-yellow-100 text-yellow-700",
     IN_TRANSIT: "bg-orange-100 text-orange-700",
-    DELIVERED: "bg-emerald-100 text-emerald-700",
-    COMPLETED: "bg-green-100 text-green-700",
+    COMPLETED: "bg-emerald-100 text-emerald-700",
+    DELIVERED: "bg-green-100 text-green-700",
     CANCELLED: "bg-red-100 text-red-600",
   };
 
