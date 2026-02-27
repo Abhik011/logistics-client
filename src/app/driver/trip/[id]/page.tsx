@@ -39,7 +39,7 @@ export default function TripPage() {
   useEffect(() => {
     if (!tripId) return;
 
-    const token = localStorage.getItem("driver_token");
+    const token = localStorage.getItem("token");
 
     const fetchTrip = async () => {
       try {
