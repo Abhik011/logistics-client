@@ -27,7 +27,7 @@ function TripDrawer({ trip, onClose }: any) {
       }
     });
 
-    return () => {socketRef.current?.disconnect();}
+    return () => { socketRef.current?.disconnect(); }
   }, [trip.id]);
 
   const fetchLocation = async () => {
@@ -95,7 +95,10 @@ function TripDrawer({ trip, onClose }: any) {
               width="100%"
               height="100%"
               loading="lazy"
-              src={`https://www.google.com/maps?q=${location.latitude},${location.longitude}&z=15&output=embed`}
+              src={`https://www.google.com/maps/embed/v1/directions?key=YOUR_GOOGLE_MAPS_KEY
+  &origin=${trip.startLatitude},${trip.startLongitude}
+  &destination=${trip.endLatitude},${trip.endLongitude}
+  &mode=driving`}
             />
           ) : (
             <div className="flex items-center justify-center h-full text-gray-400">
