@@ -95,7 +95,7 @@ function TripDrawer({ trip, onClose }: any) {
               width="100%"
               height="100%"
               loading="lazy"
-              src={`https://www.google.com/maps/embed/v1/directions?key=YOUR_GOOGLE_MAPS_KEY
+              src={`https://www.google.com/maps/embed/v1/directions?key=AIzaSyC_srD8mg0T10N_OdN0uFVEfppHsdNasuE
   &origin=${trip.startLatitude},${trip.startLongitude}
   &destination=${trip.endLatitude},${trip.endLongitude}
   &mode=driving`}
