@@ -82,11 +82,11 @@ export function Sidebar() {
           active={pathname === "/vehicles"}
         />
         <NavItem
-          href="/invoices"
+          href="/Finance"
           icon={<Receipt size={18} />}
-          label="Invoices"
+          label="Finance"
           collapsed={collapsed}
-          active={pathname === "/invoices"}
+          active={pathname === "/Finance"}
         />
         <NavItem
           href="/payments"
