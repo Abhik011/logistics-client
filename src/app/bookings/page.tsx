@@ -314,9 +314,7 @@ function BookingDrawer({ booking, onClose, onLocalUpdate }: any) {
               <div><strong>Status:</strong> {trip.status}</div>
               <div>
                 <strong>Total KM:</strong>{" "}
-                {trip?.totalDistanceKm
-                  ? trip.totalDistanceKm.toFixed(2)
-                  : "0.00"} km
+{(trip.totalDistanceKm ?? trip.distanceCovered ?? 0).toFixed(2)} km
               </div>
             </div>
           ) : (
