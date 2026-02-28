@@ -86,7 +86,7 @@ export function Sidebar() {
           icon={<Receipt size={18} />}
           label="Finance"
           collapsed={collapsed}
-          active={pathname === "/Finance"}
+          active={pathname === "/finance"}
         />
         <NavItem
           href="/payments"

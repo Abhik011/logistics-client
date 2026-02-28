@@ -38,7 +38,6 @@ export default function TripPage() {
   /* ================= FETCH TRIP ================= */
   useEffect(() => {
     if (!tripId) return;
-
     const token = localStorage.getItem("token");
 
     const fetchTrip = async () => {
@@ -206,11 +205,10 @@ export default function TripPage() {
 
         <div className="flex items-center gap-2 mt-2">
           <div
-            className={`w-3 h-3 rounded-full ${
-              tracking
+            className={`w-3 h-3 rounded-full ${tracking
                 ? "bg-green-500 animate-ping"
                 : "bg-red-500"
-            }`}
+              }`}
           />
           <p className="text-sm text-gray-600">
             {tracking

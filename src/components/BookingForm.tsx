@@ -48,47 +48,80 @@ export default function BookingForm({ onClose }: any) {
   }, []);
 
   /* ================= SUBMIT ================= */
+const handleSubmit = async (e: any) => {
+  e.preventDefault();
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
+  if (!form.customerId) {
+    alert("Please select a customer");
+    return;
+  }
+  const google = (window as any).google;
+  const geocodeAddress = async (address: string) => {
+    return new Promise<{ latitude: number; longitude: number } | null>(
+      (resolve) => {
+        if (!google) return resolve(null);
 
-    if (!form.customerId) {
-      alert("Please select a customer");
-      return;
-    }
+        const geocoder = new google.maps.Geocoder();
 
-    if (!fromCoords || !toCoords) {
-      alert("Please select valid pickup and delivery locations");
-      return;
-    }
-
-    try {
-      setLoading(true);
-
-      await api.post("/bookings", {
-        ...form,
-
-        pickupAddress: fromAddress,
-        deliveryAddress: toAddress,
-
-        pickupLatitude: fromCoords.latitude,
-        pickupLongitude: fromCoords.longitude,
-
-        deliveryLatitude: toCoords.latitude,
-        deliveryLongitude: toCoords.longitude,
-
-        weight: Number(form.weight),
-        volume: Number(form.volume),
-      });
-
-      onClose();
-    } catch (err) {
-      console.error("Booking creation failed");
-      alert("Failed to create booking");
-    } finally {
-      setLoading(false);
-    }
+        geocoder.geocode({ address }, (results: any, status: any) => {
+          if (status === "OK" && results[0]) {
+            const location = results[0].geometry.location;
+            resolve({
+              latitude: location.lat(),
+              longitude: location.lng(),
+            });
+          } else {
+            resolve(null);
+          }
+        });
+      }
+    );
   };
+
+  let pickupCoords = fromCoords;
+  let deliveryCoords = toCoords;
+
+  // 🔥 Fallback if user typed but didn't select
+  if (!pickupCoords && fromAddress) {
+    pickupCoords = await geocodeAddress(fromAddress);
+  }
+
+  if (!deliveryCoords && toAddress) {
+    deliveryCoords = await geocodeAddress(toAddress);
+  }
+
+  if (!pickupCoords || !deliveryCoords) {
+    alert("Unable to detect location. Please select from suggestions.");
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    await api.post("/bookings", {
+      ...form,
+
+      pickupAddress: fromAddress,
+      deliveryAddress: toAddress,
+
+      pickupLatitude: pickupCoords.latitude,
+      pickupLongitude: pickupCoords.longitude,
+
+      deliveryLatitude: deliveryCoords.latitude,
+      deliveryLongitude: deliveryCoords.longitude,
+
+      weight: Number(form.weight),
+      volume: Number(form.volume),
+    });
+
+    onClose();
+  } catch (err) {
+    console.error("Booking creation failed");
+    alert("Failed to create booking");
+  } finally {
+    setLoading(false);
+  }
+};
 
   /* ================= UI ================= */
 
