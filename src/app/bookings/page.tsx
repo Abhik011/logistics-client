@@ -36,24 +36,24 @@ export default function BookingsPage() {
   /* ================= SOCKET ================= */
 
   useEffect(() => {
-const socket = io();
+    const socket = io();
 
-  socket.on("booking-created", (newBooking) => {
-    setBookings((prev) => [newBooking, ...prev]);
-  });
+    socket.on("booking-created", (newBooking) => {
+      setBookings((prev) => [newBooking, ...prev]);
+    });
 
-  socket.on("booking-updated", (updatedBooking) => {
-    setBookings((prev) =>
-      prev.map((b) =>
-        b.id === updatedBooking.id ? updatedBooking : b
-      )
-    );
-  });
+    socket.on("booking-updated", (updatedBooking) => {
+      setBookings((prev) =>
+        prev.map((b) =>
+          b.id === updatedBooking.id ? updatedBooking : b
+        )
+      );
+    });
 
-  return () => {
-    socket.disconnect();   // ✅ now returns void
-  };
-}, []);
+    return () => {
+      socket.disconnect();   // ✅ now returns void
+    };
+  }, []);
 
   /* ================= KPI ================= */
 
@@ -137,11 +137,10 @@ const socket = io();
             <button
               key={status}
               onClick={() => setStatusFilter(status)}
-              className={`px-4 py-2 text-sm rounded-xl border transition ${
-                statusFilter === status
+              className={`px-4 py-2 text-sm rounded-xl border transition ${statusFilter === status
                   ? "bg-violet-600 text-white border-violet-600"
                   : "bg-white hover:bg-gray-50"
-              }`}
+                }`}
             >
               {status}
             </button>
@@ -253,12 +252,12 @@ function BookingDrawer({ booking, onClose, onLocalUpdate }: any) {
   const outstanding =
     invoice
       ? (invoice.netReceivable || invoice.grandTotal) -
-        invoice.paidAmount
+      invoice.paidAmount
       : 0;
 
   const profit =
-    (booking.revenue || 0) -
-    (booking.actualCost || 0);
+    (trip?.revenue || 0) -
+    (trip?.actualCost || 0);
 
   const steps = [
     "CREATED",
@@ -315,7 +314,9 @@ function BookingDrawer({ booking, onClose, onLocalUpdate }: any) {
               <div><strong>Status:</strong> {trip.status}</div>
               <div>
                 <strong>Total KM:</strong>{" "}
-                {trip.totalDistanceKm?.toFixed(2) || 0} km
+                {trip?.totalDistanceKm
+                  ? trip.totalDistanceKm.toFixed(2)
+                  : "0.00"} km
               </div>
             </div>
           ) : (
@@ -342,7 +343,7 @@ function BookingDrawer({ booking, onClose, onLocalUpdate }: any) {
             <div className="flex justify-between text-sm">
               <span>Cost</span>
               <span>
-                ₹{booking.actualCost?.toLocaleString() || 0}
+                ₹{trip?.actualCost?.toLocaleString() || 0}
               </span>
             </div>
 
