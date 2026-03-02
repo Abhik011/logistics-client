@@ -138,8 +138,8 @@ export default function BookingsPage() {
               key={status}
               onClick={() => setStatusFilter(status)}
               className={`px-4 py-2 text-sm rounded-xl border transition ${statusFilter === status
-                  ? "bg-violet-600 text-white border-violet-600"
-                  : "bg-white hover:bg-gray-50"
+                ? "bg-violet-600 text-white border-violet-600"
+                : "bg-white hover:bg-gray-50"
                 }`}
             >
               {status}
@@ -259,14 +259,13 @@ function BookingDrawer({ booking, onClose, onLocalUpdate }: any) {
     (trip?.revenue || 0) -
     (trip?.actualCost || 0);
 
-  const steps = [
-    "CREATED",
-    "PLANNED",
-    "DISPATCHED",
-    "IN_TRANSIT",
-    "COMPLETED",
-    "COMPLETED",
-  ];
+ const steps = [
+  "CREATED",
+  "PLANNED",
+  "DISPATCHED",
+  "IN_TRANSIT",
+  "COMPLETED",
+];
 
   return (
     <div className="fixed inset-0 flex z-50">
@@ -313,9 +312,14 @@ function BookingDrawer({ booking, onClose, onLocalUpdate }: any) {
               <div><strong>Trip:</strong> {trip.tripNumber}</div>
               <div><strong>Status:</strong> {trip.status}</div>
               <div>
-                <strong>Total KM:</strong>{" "}
-{(trip.totalDistanceKm ?? trip.distanceCovered ?? 0).toFixed(2)} km
-              </div>
+  <strong>Billable KM:</strong>{" "}
+  {booking.distanceKm?.toFixed(2) || 0} km
+</div>
+
+<div>
+  <strong>GPS KM:</strong>{" "}
+  {trip.distanceCovered?.toFixed(2) || 0} km
+</div>
             </div>
           ) : (
             <p className="text-sm text-gray-400">
@@ -334,7 +338,7 @@ function BookingDrawer({ booking, onClose, onLocalUpdate }: any) {
             <div className="flex justify-between text-sm">
               <span>Revenue</span>
               <span className="text-emerald-600 font-semibold">
-                ₹{booking.revenue?.toLocaleString() || 0}
+               ₹{trip?.revenue?.toLocaleString() || 0}
               </span>
             </div>
 
