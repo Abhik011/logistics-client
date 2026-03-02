@@ -63,7 +63,7 @@ export default function BookingsPage() {
       active: bookings.filter((b) =>
         ["PLANNED", "DISPATCHED", "IN_TRANSIT"].includes(b.status)
       ).length,
-      completed: bookings.filter((b) => b.status === "COMPLETED").length,
+      completed: bookings.filter((b) => ["COMPLETED", "DELIVERED"].includes(b.status)).length,
       cancelled: bookings.filter((b) => b.status === "CANCELLED").length,
       delayed: bookings.filter(
         (b) =>
@@ -376,7 +376,7 @@ function BookingDrawer({ booking, onClose, onLocalUpdate }: any) {
             </div>
 
             <div className="border-t pt-2 flex justify-between text-sm font-semibold text-emerald-600">
-            <span className="text-gray-700">Revenue (Customer)</span>
+              <span className="text-gray-700">Revenue (Customer)</span>
               <span>
                 ₹{trip?.revenue?.toLocaleString() || 0}
               </span>
