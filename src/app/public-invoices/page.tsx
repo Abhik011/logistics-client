@@ -27,7 +27,7 @@ export default function InvoicesPage() {
   useEffect(() => {
     fetchInvoices();
 
-  const socket = io();
+    const socket = io();
 
     socket.on("invoice-created", (newInvoice) => {
       setInvoices((prev) => [newInvoice, ...prev]);
@@ -41,17 +41,18 @@ export default function InvoicesPage() {
       );
     });
 
-    return () => { socket.disconnect(); }
+    return () => {socket.disconnect();};
   }, []);
 
   return (
     <div className="space-y-6">
 
+      {/* Header */}
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-semibold">Invoices</h1>
           <p className="text-sm text-gray-500">
-            Manage billing and collections
+            GST Billing & Collection Management
           </p>
         </div>
 
@@ -64,7 +65,8 @@ export default function InvoicesPage() {
         </button>
       </div>
 
-      <div className="bg-white rounded-2xl shadow border overflow-hidden">
+      {/* Table */}
+      <div className="bg-white rounded-2xl shadow border overflow-x-auto">
 
         {loading ? (
           <div className="p-10 text-center text-gray-500">
@@ -75,11 +77,15 @@ export default function InvoicesPage() {
             No invoices found
           </div>
         ) : (
-          <table className="w-full text-sm">
+          <table className="min-w-full text-sm">
             <thead className="bg-gray-50 text-xs uppercase text-gray-600">
               <tr>
-                <th className="px-6 py-4 text-left">Invoice No</th>
-                <th className="px-6 py-4 text-left">Total</th>
+                <th className="px-6 py-4 text-left">Invoice</th>
+                <th className="px-6 py-4 text-left">Taxable</th>
+                <th className="px-6 py-4 text-left">GST</th>
+                <th className="px-6 py-4 text-left">TDS</th>
+                <th className="px-6 py-4 text-left">Grand Total</th>
+                <th className="px-6 py-4 text-left">Net Receivable</th>
                 <th className="px-6 py-4 text-left">Paid</th>
                 <th className="px-6 py-4 text-left">Outstanding</th>
                 <th className="px-6 py-4 text-left">Status</th>
@@ -88,37 +94,65 @@ export default function InvoicesPage() {
 
             <tbody>
               {invoices.map((inv) => {
+                const gstTotal =
+                  (inv.cgstAmount || 0) +
+                  (inv.sgstAmount || 0) +
+                  (inv.igstAmount || 0);
+
                 const outstanding =
-                  (inv.netReceivable || inv.grandTotal) - inv.paidAmount;
+                  (inv.netReceivable || inv.grandTotal) -
+                  (inv.paidAmount || 0);
 
                 return (
                   <tr key={inv.id} className="border-t hover:bg-gray-50">
+
                     <td className="px-6 py-4 font-medium">
                       {inv.invoiceNumber}
                     </td>
 
                     <td className="px-6 py-4">
-                      ₹{inv.grandTotal.toLocaleString()}
+                      ₹{(inv.totalAmount || 0).toLocaleString()}
+                    </td>
+
+                    <td className="px-6 py-4">
+                      ₹{gstTotal.toLocaleString()}
+                      <div className="text-xs text-gray-400">
+                        {inv.gstPercent}% GST
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-4 text-amber-600">
+                      ₹{(inv.tdsAmount || 0).toLocaleString()}
+                    </td>
+
+                    <td className="px-6 py-4 font-semibold">
+                      ₹{(inv.grandTotal || 0).toLocaleString()}
+                    </td>
+
+                    <td className="px-6 py-4 text-blue-600 font-medium">
+                      ₹{(inv.netReceivable || 0).toLocaleString()}
                     </td>
 
                     <td className="px-6 py-4 text-emerald-600 font-medium">
-                      ₹{inv.paidAmount.toLocaleString()}
+                      ₹{(inv.paidAmount || 0).toLocaleString()}
                     </td>
 
-                    <td className="px-6 py-4 text-red-600 font-medium">
+                    <td className={`px-6 py-4 font-semibold ${
+                      outstanding > 0 ? "text-red-600" : "text-emerald-600"
+                    }`}>
                       ₹{outstanding.toLocaleString()}
                     </td>
 
                     <td className="px-6 py-4">
                       <InvoiceStatusBadge status={inv.status} />
                     </td>
+
                   </tr>
                 );
               })}
             </tbody>
           </table>
         )}
-
       </div>
 
       {open && (

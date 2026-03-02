@@ -13,10 +13,12 @@ export default function DashboardPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
     axios
       .get("/api/dashboard", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => setData(res.data))
@@ -38,6 +40,12 @@ export default function DashboardPage() {
       </div>
     );
 
+  const revenue = data?.revenue || {
+    total: 0,
+    collected: 0,
+    outstanding: 0,
+  };
+
   return (
     <div className="space-y-8 animate-fadeIn">
 
@@ -51,47 +59,46 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      {/* Stats Grid */}
-   
+      {/* KPI Cards */}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
 
-<div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <KpiCard
+          title="Total Revenue"
+          value={`₹${revenue.total.toLocaleString()}`}
+          change={0}
+          type="revenue"
+        />
 
-  <KpiCard
-    title="Total Revenue"
-    value={`₹${data.revenue.total.toLocaleString()}`}
-    change={12.5}
-    type="revenue"
-  />
+        <KpiCard
+          title="Collected"
+          value={`₹${revenue.collected.toLocaleString()}`}
+          change={0}
+          type="collected"
+        />
 
-  <KpiCard
-    title="Collected"
-    value={`₹${data.revenue.collected.toLocaleString()}`}
-    change={8.2}
-    type="collected"
-  />
+        <KpiCard
+          title="Outstanding"
+          value={`₹${revenue.outstanding.toLocaleString()}`}
+          change={0}
+          type="outstanding"
+        />
 
-  <KpiCard
-    title="Outstanding"
-    value={`₹${data.revenue.outstanding.toLocaleString()}`}
-    change={-3.4}
-    type="outstanding"
-  />
+        <KpiCard
+          title="On-Time Delivery"
+          value={`${data.onTimePercentage || 0}%`}
+          change={0}
+          type="delivery"
+        />
 
-  <KpiCard
-    title="On-Time Delivery"
-    value={`${data.onTimePercentage}%`}
-    change={4.1}
-    type="delivery"
-  />
+      </div>
 
-</div>
-
-      {/* Chart Section */}
+      {/* Revenue Trend */}
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
         <h2 className="text-lg font-semibold mb-4 text-gray-800">
           Revenue Trend (Last 6 Months)
         </h2>
-        <RevenueChart data={data.revenueTrend} />
+
+        <RevenueChart data={data.revenueTrend || []} />
       </div>
 
     </div>
