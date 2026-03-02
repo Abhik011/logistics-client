@@ -76,6 +76,7 @@ export default function BookingsPage() {
 
   /* ================= FILTER ================= */
 
+
   const filtered = useMemo(() => {
     return bookings
       .filter((b) =>
@@ -197,7 +198,7 @@ export default function BookingsPage() {
                   </td>
 
                   <td className="px-6 py-4 text-emerald-600 font-semibold">
-                    ₹{b.revenue?.toLocaleString() || 0}
+                    ₹{b.trip?.revenue?.toLocaleString() || 0}
                   </td>
 
                   <td className="px-6 py-4">
@@ -259,13 +260,13 @@ function BookingDrawer({ booking, onClose, onLocalUpdate }: any) {
     (trip?.revenue || 0) -
     (trip?.actualCost || 0);
 
- const steps = [
-  "CREATED",
-  "PLANNED",
-  "DISPATCHED",
-  "IN_TRANSIT",
-  "COMPLETED",
-];
+  const steps = [
+    "CREATED",
+    "PLANNED",
+    "DISPATCHED",
+    "IN_TRANSIT",
+    "COMPLETED",
+  ];
 
   return (
     <div className="fixed inset-0 flex z-50">
@@ -312,14 +313,14 @@ function BookingDrawer({ booking, onClose, onLocalUpdate }: any) {
               <div><strong>Trip:</strong> {trip.tripNumber}</div>
               <div><strong>Status:</strong> {trip.status}</div>
               <div>
-  <strong>Billable KM:</strong>{" "}
-  {booking.distanceKm?.toFixed(2) || 0} km
-</div>
+                <strong>Billable KM:</strong>{" "}
+                {booking.distanceKm?.toFixed(2) || 0} km
+              </div>
 
-<div>
-  <strong>GPS KM:</strong>{" "}
-  {trip.distanceCovered?.toFixed(2) || 0} km
-</div>
+              <div>
+                <strong>GPS KM:</strong>{" "}
+                {trip.distanceCovered?.toFixed(2) || 0} km
+              </div>
             </div>
           ) : (
             <p className="text-sm text-gray-400">
@@ -334,18 +335,50 @@ function BookingDrawer({ booking, onClose, onLocalUpdate }: any) {
             Financial Details
           </p>
 
-          <div className="mt-3 p-3 rounded-xl bg-gray-50 border">
+          <div className="mt-3 p-4 rounded-xl bg-gray-50 border space-y-2">
+
             <div className="flex justify-between text-sm">
-              <span>Revenue</span>
-              <span className="text-emerald-600 font-semibold">
-               ₹{trip?.revenue?.toLocaleString() || 0}
+              <span>Billable KM</span>
+              <span>{trip?.billableKm?.toFixed(2) || 0} km</span>
+            </div>
+
+            <div className="flex justify-between text-sm">
+              <span>Running Cost (Per KM)</span>
+              <span>
+                ₹{trip?.runningCost?.toLocaleString() || 0}
               </span>
             </div>
 
             <div className="flex justify-between text-sm">
-              <span>Cost</span>
+              <span>Fuel Litres</span>
+              <span>{trip?.fuelLitres?.toFixed(2) || 0} L</span>
+            </div>
+
+            <div className="flex justify-between text-sm">
+              <span>Fuel Cost</span>
               <span>
-                ₹{trip?.actualCost?.toLocaleString() || 0}
+                ₹{trip?.fuelCost?.toLocaleString() || 0}
+              </span>
+            </div>
+
+            <div className="flex justify-between text-sm">
+              <span>Other Expenses</span>
+              <span>
+                ₹{trip?.otherCost?.toLocaleString() || 0}
+              </span>
+            </div>
+
+            <div className="border-t pt-2 flex justify-between text-sm font-medium">
+              <span className="text-gray-700">Internal Cost</span>
+              <span>
+                ₹{trip?.totalCost?.toLocaleString() || 0}
+              </span>
+            </div>
+
+            <div className="border-t pt-2 flex justify-between text-sm font-semibold text-emerald-600">
+            <span className="text-gray-700">Revenue (Customer)</span>
+              <span>
+                ₹{trip?.revenue?.toLocaleString() || 0}
               </span>
             </div>
 
@@ -353,14 +386,20 @@ function BookingDrawer({ booking, onClose, onLocalUpdate }: any) {
               <span>Profit</span>
               <span
                 className={
-                  profit >= 0
+                  (trip?.profit || 0) >= 0
                     ? "text-blue-600"
                     : "text-red-600"
                 }
               >
-                ₹{profit.toLocaleString()}
+                ₹{trip?.profit?.toLocaleString() || 0}
               </span>
             </div>
+
+            <div className="flex justify-between text-xs text-gray-500">
+              <span>Margin</span>
+              <span>{trip?.profitMarginPercent || 0}%</span>
+            </div>
+
           </div>
         </div>
 
